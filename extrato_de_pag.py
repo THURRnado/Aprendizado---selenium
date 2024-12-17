@@ -4,6 +4,10 @@ sefaz virrtal
 usuario: hel00012
 senha: Asdf3340
 
+01/22/2024 - 30/11/2024
+
+16.147.609-0
+
 Servicos para empresa - Tributos - Pagamentos - Consultar extratos de Pagamento por contribuinte
 
 preencher os dados'''
@@ -111,9 +115,7 @@ def download_extrato_de_pag():
         new_window = [window for window in driver.window_handles if window != original_window][0]
         driver.switch_to.window(new_window)
 
-        WebDriverWait(driver, 5)
-
-        print(driver.page_source)
+        
 
         
 
