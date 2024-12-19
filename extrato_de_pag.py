@@ -12,6 +12,7 @@ Servicos para empresa - Tributos - Pagamentos - Consultar extratos de Pagamento 
 
 preencher os dados'''
 
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -69,7 +70,8 @@ def download_extrato_de_pag():
         "download.default_directory": download_dir,  # Define o diretório de download
         "download.prompt_for_download": False,       # Não pergunta antes de baixar
         "download.directory_upgrade": True,         # Atualiza automaticamente o diretório de download
-        "safebrowsing.enabled": True                # Ativa a segurança para downloads
+        "safebrowsing.enabled": True ,               # Ativa a segurança para downloads
+        "plugins.always_open_pdf_externally": True
     }
     chrome_options.add_experimental_option("prefs", chrome_prefs)
 
@@ -111,13 +113,6 @@ def download_extrato_de_pag():
 
         click('/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[6]/td/input', driver)
 
-        original_window = driver.current_window_handle
-        new_window = [window for window in driver.window_handles if window != original_window][0]
-        driver.switch_to.window(new_window)
-
-        
-
-        
 
         time.sleep(10)
         
