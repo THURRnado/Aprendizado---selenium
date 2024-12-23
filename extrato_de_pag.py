@@ -1,9 +1,6 @@
 '''sefaz pb
 sefaz virrtal
 
-usuario: hel00012
-senha: Asdf3340
-
 01/22/2024 - 30/11/2024
 
 16.147.609-0
@@ -51,10 +48,10 @@ def download_extrato_de_pag():
         iframe('//*[@id="atf-login"]/iframe', driver)
 
         #Preenchendo o campo de login
-        write('//*[@id="form-cblogin-username"]/div/input', 'hel00012', driver)
+        write('//*[@id="form-cblogin-username"]/div/input', '', driver)
 
         #Preenchendo o campo de senha
-        write('//*[@id="form-cblogin-password"]/div[1]/input', 'Asdf3340', driver)
+        write('//*[@id="form-cblogin-password"]/div[1]/input', '', driver)
 
         click('//*[@id="form-cblogin-password"]/div[2]/input[2]', driver)
 
