@@ -1,9 +1,6 @@
 '''sefaz pb
 sefaz virrtal
 
-usuario: hel00012
-senha: Asdf3340
-
 01/22/2024 - 30/11/2024
 
 16.147.609-0
@@ -17,9 +14,15 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
-from metodos_selenium import write, click, iframe, iframe_end
+from metodos_selenium import write, click, iframe, iframe_end, scroll_to_element
+from dotenv import load_dotenv
 
 def download_extrato_de_pag():
+
+    load_dotenv()
+
+    user_name = os.getenv("USER_NAME")
+    user_password = os.getenv("USER_PASSWORD")
 
     # Define o diretório onde os arquivos serão baixados
     download_dir = os.path.join(os.getcwd(), "uploads", "pdf")
@@ -48,13 +51,16 @@ def download_extrato_de_pag():
         # Abrir a url
         driver.get(url)
 
+        # Scrollar até o elemento especificado
+        scroll_to_element('//*[@id="full-content"]', driver)
+
         iframe('//*[@id="atf-login"]/iframe', driver)
 
         #Preenchendo o campo de login
-        write('//*[@id="form-cblogin-username"]/div/input', 'hel00012', driver)
+        write('//*[@id="form-cblogin-username"]/div/input', user_name, driver)
 
         #Preenchendo o campo de senha
-        write('//*[@id="form-cblogin-password"]/div[1]/input', 'Asdf3340', driver)
+        write('//*[@id="form-cblogin-password"]/div[1]/input', user_password, driver)
 
         click('//*[@id="form-cblogin-password"]/div[2]/input[2]', driver)
 

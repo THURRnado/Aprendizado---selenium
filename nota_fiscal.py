@@ -4,13 +4,20 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
-from metodos_selenium import write, click, iframe, iframe_end
+from metodos_selenium import write, click, iframe, iframe_end, get_text, scroll_to_element
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+from dotenv import load_dotenv
 
 def download_nota_fiscal():
+
+    load_dotenv()
+
+    user_name = os.getenv("USER_NAME")
+    user_password = os.getenv("USER_PASSWORD")
     
     download_dir = os.path.join(os.getcwd(), "uploads", "pdf")
 
@@ -28,6 +35,15 @@ def download_nota_fiscal():
     }
     chrome_options.add_experimental_option("prefs", chrome_prefs)
 
+    '''# Parte que desativa a janela do chrome
+    chrome_options.add_argument("--headless")  # Roda o Chrome sem interface gráfica
+    chrome_options.add_argument("--disable-gpu")  # Necessário para algumas versões do Chrome
+    chrome_options.add_argument("--window-size=1920,1080")  # Tamanho da janela no modo headless
+    chrome_options.add_argument("--no-sandbox")  # Recomendado para servidores
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Resolve problemas de memória compartilhada
+
+    driver = webdriver.Chrome(options=chrome_options)'''
+
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
@@ -38,13 +54,16 @@ def download_nota_fiscal():
         # Abrir a url
         driver.get(url)
 
+        # Scrollar até o elemento especificado
+        scroll_to_element('//*[@id="full-content"]', driver)
+
         iframe('//*[@id="atf-login"]/iframe', driver)
 
         #Preenchendo o campo de login
-        write('//*[@id="form-cblogin-username"]/div/input', 'hel00012', driver)
+        write('//*[@id="form-cblogin-username"]/div/input', user_name, driver)
 
         #Preenchendo o campo de senha
-        write('//*[@id="form-cblogin-password"]/div[1]/input', 'Asdf3340', driver)
+        write('//*[@id="form-cblogin-password"]/div[1]/input', user_password, driver)
 
         click('//*[@id="form-cblogin-password"]/div[2]/input[2]', driver)
 
@@ -78,11 +97,41 @@ def download_nota_fiscal():
 
         click('//*[@id="btnConsulta"]', driver)
 
-        time.sleep(5)
+        time.sleep(3)
 
         driver.get('https://www.sefaz.pb.gov.br/servirtual/caixa-de-mensagens')
 
-        time.sleep(30)
+        time.sleep(1)
+
+        driver.get('https://www4.sefaz.pb.gov.br/atf/seg/SEGf_MinhasMensagens.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
+
+        date = get_text('/html/body/form/div/table/tbody/tr[3]/td[6]/a', driver)
+
+        print(f'Esse é o time da ultima mensagem: {date}')
+
+        while True:
+            time.sleep(15)
+
+            # Recarrega a página
+            driver.refresh()
+
+            try:
+                # Tenta clicar no elemento
+                click('/html/body/form/div/table/tbody/tr[3]/td[3]/a', driver)
+
+                # Se o clique for bem-sucedido, sai do loop
+                print("Clique realizado com sucesso!")
+                break
+            except TimeoutException:
+                # Caso o clique falhe, continua no loop
+                print("Elemento não encontrado. Recarregando a página...")
+
+
+        click('/html/body/form/div/table/tbody/tr[5]/td[3]/a', driver)
+
+        click('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[8]/td/a', driver)
+
+        time.sleep(10)
 
     finally:
 
@@ -90,3 +139,27 @@ def download_nota_fiscal():
 
 
 download_nota_fiscal()
+
+
+'''
+
+linha 1: 
+
+anexo: /html/body/form/div/table/tbody/tr[3]/td[3]/a
+
+date: /html/body/form/div/table/tbody/tr[3]/td[6]/a
+
+
+linha 2:
+
+anexo: /html/body/form/div/table/tbody/tr[5]/td[3]/a
+
+date: /html/body/form/div/table/tbody/tr[5]/td[6]/a
+
+linha 3:
+
+anexo: /html/body/form/div/table/tbody/tr[7]/td[3]/a
+
+date: /html/body/form/div/table/tbody/tr[7]/td[6]/a
+
+'''
