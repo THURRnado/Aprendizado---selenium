@@ -3,7 +3,9 @@ sefaz virrtal
 
 01/22/2024 - 30/11/2024
 
-16.147.609-0
+161476090 - IE Gm comercio
+163805814 - IE DA TROPICAL DISTRIBUIDORA
+161339387 - IE DA ABC DISTRIBUIDOR
 
 Servicos para empresa - Tributos - Pagamentos - Consultar extratos de Pagamento por contribuinte
 
@@ -16,8 +18,9 @@ import time
 import os
 from metodos_selenium import write, click, iframe, iframe_end, scroll_to_element
 from dotenv import load_dotenv
+from manipulacao_arquivos import extract_and_save_tables
 
-def download_extrato_de_pag():
+def download_extrato_de_pag(ie:str, data_inicio:str, data_final:str):
 
     load_dotenv()
 
@@ -68,13 +71,13 @@ def download_extrato_de_pag():
 
         driver.get('https://www4.sefaz.pb.gov.br/atf/arr/ARRf_ConsultarExtrPgtoCont.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
 
-        write('/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[2]/td[2]/input[3]', '01/11/2024', driver)
+        write('/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[2]/td[2]/input[3]', data_inicio, driver)
 
-        write('/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[2]/td[2]/input[4]', '30/11/2024', driver)
+        write('/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[2]/td[2]/input[4]', data_final, driver)
 
         iframe('/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[5]/td/table/tbody/tr[2]/td/iframe', driver)
 
-        write('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[2]/input', '161476090', driver)
+        write('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[2]/input', ie, driver)
 
         click('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[3]/input', driver)
 
@@ -82,10 +85,32 @@ def download_extrato_de_pag():
 
         click('/html/body/form/table/tbody/tr[2]/td/table/tbody/tr[6]/td/input', driver)
         
-        time.sleep(0.5)
+        time.sleep(1)
+
+        # Caminho para a pasta
+        directory = os.path.join(os.getcwd(), "uploads", "pdf")
+
+        # Listar todos os arquivos na pasta
+        files = [os.path.join(directory, f) for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+
+        # Verificar se há arquivos na pasta
+        file_path = max(files, key=os.path.getmtime)
+
+        # Diretório para salvar os arquivos
+        output_dir = os.path.join(os.getcwd(), "uploads", "pdf") 
+        extract_and_save_tables(file_path, output_dir)
+
+    except Exception as e:
+
+        print(f'Houve um erro - {e}')
 
     finally:
 
         driver.quit()
 
-download_extrato_de_pag()
+lista_de_empresas = ['161476090', '163805814', '161339387']
+data_inicio = '01/10/2024'
+data_final = '30/11/2024'
+
+for ie in lista_de_empresas:
+    download_extrato_de_pag(ie, data_inicio, data_final)
