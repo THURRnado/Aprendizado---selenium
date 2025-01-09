@@ -12,6 +12,88 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from dotenv import load_dotenv
 
+def process(driver, option:int, dt_start:str, dt_end:str, ie:str):
+
+    driver.get('https://www.sefaz.pb.gov.br/servirtual/documentos-fiscais/nf-e/consulta-emitentes-destinatarios')
+
+    driver.get('https://www4.sefaz.pb.gov.br/atf/fis/FISf_ConsultarNFeXml2.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
+
+    write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[1]', dt_start, driver)
+
+    write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[2]', dt_end, driver)
+
+    iframe('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[7]/td/table/tbody/tr[2]/td/iframe', driver)
+
+    if option == 1:
+        write('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[2]/input', ie, driver)
+    else:
+        write('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[2]/input', '', driver)
+
+    click('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[3]/input', driver)
+
+    time.sleep(0.5)
+
+    iframe_end(driver)
+
+    select_element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, '/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[12]/td/select'))
+    )
+
+    select = Select(select_element)
+
+    select.select_by_index(option)  
+
+    click('//*[@id="btnConsulta"]', driver)
+
+    time.sleep(3)
+
+    driver.get('https://www.sefaz.pb.gov.br/servirtual/caixa-de-mensagens')
+
+    time.sleep(1)
+
+    driver.get('https://www4.sefaz.pb.gov.br/atf/seg/SEGf_MinhasMensagens.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
+
+    date = get_text('/html/body/form/div/table/tbody/tr[3]/td[6]/a', driver)
+
+    print(f'Esse é o time da ultima mensagem: {date}')
+
+    count = 0
+
+    while True:
+
+        if count > 2:
+            break
+
+        time.sleep(30)
+
+        # Recarrega a página
+        driver.refresh()
+
+        try:
+            # Tenta clicar no elemento
+            click('/html/body/form/div/table/tbody/tr[3]/td[3]/a', driver)
+
+            # Se o clique for bem-sucedido, sai do loop
+            print("Clique realizado com sucesso!")
+            break
+        except TimeoutException:
+            count = count + 1
+            # Caso o clique falhe, continua no loop
+            print("Elemento não encontrado. Recarregando a página...")
+
+    try:
+
+        click('/html/body/form/div/table/tbody/tr[5]/td[3]/a', driver)
+
+        click('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[8]/td/a', driver)
+
+        time.sleep(5)
+
+    except Exception as e:
+
+        print("Elementos não encontrados!")
+
+
 def download_nota_fiscal():
 
     load_dotenv()
@@ -69,69 +151,10 @@ def download_nota_fiscal():
 
         iframe_end(driver)
 
-        driver.get('https://www.sefaz.pb.gov.br/servirtual/documentos-fiscais/nf-e/consulta-emitentes-destinatarios')
-
-        driver.get('https://www4.sefaz.pb.gov.br/atf/fis/FISf_ConsultarNFeXml2.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
-
-        write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[1]', '01/09/2024', driver)
-
-        write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[2]', '30/11/2024', driver)
-
-        iframe('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[7]/td/table/tbody/tr[2]/td/iframe', driver)
-
-        write('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[2]/input', '161476090', driver)
-
-        click('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[3]/input', driver)
-
-        time.sleep(0.5)
-
-        iframe_end(driver)
-
-        select_element = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, '/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[12]/td/select'))
-        )
-
-        select = Select(select_element)
-
-        select.select_by_index(1)  
-
-        click('//*[@id="btnConsulta"]', driver)
-
-        time.sleep(3)
-
-        driver.get('https://www.sefaz.pb.gov.br/servirtual/caixa-de-mensagens')
-
-        time.sleep(1)
-
-        driver.get('https://www4.sefaz.pb.gov.br/atf/seg/SEGf_MinhasMensagens.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
-
-        date = get_text('/html/body/form/div/table/tbody/tr[3]/td[6]/a', driver)
-
-        print(f'Esse é o time da ultima mensagem: {date}')
-
-        while True:
-            time.sleep(30)
-
-            # Recarrega a página
-            driver.refresh()
-
-            try:
-                # Tenta clicar no elemento
-                click('/html/body/form/div/table/tbody/tr[3]/td[3]/a', driver)
-
-                # Se o clique for bem-sucedido, sai do loop
-                print("Clique realizado com sucesso!")
-                break
-            except TimeoutException:
-                # Caso o clique falhe, continua no loop
-                print("Elemento não encontrado. Recarregando a página...")
-
-
-        click('/html/body/form/div/table/tbody/tr[5]/td[3]/a', driver)
-
-        click('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[8]/td/a', driver)
-
-        time.sleep(10)
+        # Consultar TXT
+        process(driver, 1, '01/09/2024', '30/11/2024', '161476090')
+        # Consultar XML
+        process(driver, 2, '01/09/2024', '30/11/2024', '161476090')
 
     finally:
 
