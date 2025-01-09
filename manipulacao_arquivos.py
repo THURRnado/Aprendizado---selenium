@@ -1,6 +1,7 @@
 import pandas as pd
 import pdfplumber
 import os
+import zipfile
 
 def extract_and_save_tables(file_path, output_dir):
     all_tables = []  # Lista para armazenar todas as tabelas concatenadas
@@ -38,7 +39,44 @@ def extract_and_save_tables(file_path, output_dir):
         os.rename(file_path, new_filepath)
         print(f"Arquivo PDF renomeado para: {new_filepath}")
 
-'''# Exemplo de uso
+
+def process_nf(file_path, output_dir):
+    # Verifica se o caminho fornecido é um arquivo ZIP
+    if not zipfile.is_zipfile(file_path):
+        raise ValueError(f"O arquivo {file_path} não é um arquivo ZIP válido.")
+    
+    # Cria o diretório de saída, se não existir
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Abre o arquivo ZIP
+    with zipfile.ZipFile(file_path, 'r') as zip_ref:
+        # Lista os arquivos no ZIP
+        txt_files = [file for file in zip_ref.namelist() if file.endswith('.txt')]
+        
+        if not txt_files:
+            raise ValueError("Nenhum arquivo .txt encontrado no arquivo ZIP.")
+        
+        for txt_file in txt_files:
+            # Lê o conteúdo do arquivo .txt
+            with zip_ref.open(txt_file) as f:
+                # Lê o conteúdo do arquivo diretamente em um DataFrame
+                df = pd.read_csv(f, sep='|', encoding='latin1')
+            
+            # Obtém os nomes das colunas
+            colunas = df.columns.tolist()
+
+            # Caminho para o arquivo de saída (salva as colunas em um arquivo .txt)
+            output_txt_path = os.path.join(output_dir, "colunas_output.txt")
+            
+            # Grava os nomes das colunas em um arquivo .txt
+            with open(output_txt_path, 'w', encoding='utf-8') as output_file:
+                for coluna in colunas:
+                    output_file.write(f"{coluna}\n")
+
+            # Exibe uma mensagem de confirmação
+            print(f"Colunas foram salvas em: {output_txt_path}")
+            print(f"Colunas do arquivo {txt_file}: {colunas}")
+
 
 # Caminho para a pasta
 directory = os.path.join(os.getcwd(), "uploads", "pdf")
@@ -47,9 +85,8 @@ directory = os.path.join(os.getcwd(), "uploads", "pdf")
 files = [os.path.join(directory, f) for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
 
 # Verificar se há arquivos na pasta
-
 file_path = max(files, key=os.path.getmtime)
 
 # Diretório para salvar os arquivos
 output_dir = os.path.join(os.getcwd(), "uploads", "pdf") 
-extract_and_save_tables(file_path, output_dir)'''
+process_nf(file_path, output_dir)

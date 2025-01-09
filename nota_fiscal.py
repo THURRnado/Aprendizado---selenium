@@ -73,7 +73,7 @@ def download_nota_fiscal():
 
         driver.get('https://www4.sefaz.pb.gov.br/atf/fis/FISf_ConsultarNFeXml2.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
 
-        write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[1]', '01/11/2024', driver)
+        write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[1]', '01/09/2024', driver)
 
         write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[2]', '30/11/2024', driver)
 
@@ -110,7 +110,7 @@ def download_nota_fiscal():
         print(f'Esse é o time da ultima mensagem: {date}')
 
         while True:
-            time.sleep(15)
+            time.sleep(30)
 
             # Recarrega a página
             driver.refresh()

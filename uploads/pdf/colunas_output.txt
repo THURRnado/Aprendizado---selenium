@@ -1,0 +1,141 @@
+Chave_de_acesso
+Numero
+Serie
+Data_de_emissao
+Hora_de_emissao
+Situacao
+Tipo_Operacao
+Valor_total_da_nota
+Nota_referenciada
+Nome_razao_social_emit
+CPF_CNPJ_emit
+Inscricao_estadual_emit
+Endereco_emit
+Bairro_distrito_emit
+CEP_emit
+Municipio_emit
+códigomunic.emit.
+Fone_fax_emit
+UF_emit
+Pais_emit
+Nome_razao_social_dest
+CPF_CNPJ_dest
+Inscricao_estadual_dest
+Endereco_dest
+Bairro_distrito_dest
+CEP_dest
+Municipio_dest
+códigomunic.dest
+Fone_fax_dest
+UF_dest
+Pais_dest
+Numero_fatura
+Vencimento_fatura
+Valor_fatura
+Placa_do_veiculo_reboque
+UF_placa
+Nome_da_Transportadora
+Inscricao_Estadual_da_Transportadora
+CNPJ_da_Transportadora
+CPF_da_Transportadora
+Modalidade_do_Frete
+Base_de_Calculo_do_ICMS
+Valor_do_ICMS
+Base_de_calculo_do_ICMS_substituicao
+Valor_do_ICMS_substituicao
+Valor_total_dos_produtos
+Valor_do_frete
+Valor_do_seguro
+Valor_desconto
+Valor_outras_despesas_acessorias
+Valor_do_IPI
+PIS Total
+COFINS Total
+Valor_total_ICMS_UF_dest
+Valor_total_ICMS_UF_remet
+Valor_BC_ICMS_UF_dest
+Aliquota_interna_UF_dest
+Aliquota_interestadual_UF_env
+Perc_prov_partilha_UF
+Perc_ICMS_FCP_UF_dest
+Valor_ICMS_FCP_UF_dest
+Valor_ICMS_partilha_UF_dest
+Valor_ICMS_partilha_UF_remet
+CST PIS
+BC PIS
+alíq. PIS
+Valor PIS
+CST COFINS
+BC COFINS
+alíq. COFINS
+Valor COFINS
+Nr_item
+Cod_prod
+Descricao_do_Produto_ou_servicos
+NCM_prod
+CST_prod
+CFOP_prod
+Unid_prod_trib
+Unid_prod_com
+Quant_prod_trib
+Quant_prod_com
+Valor_unit_prod_trib
+Valor_unit_prod_com
+Valor_total_prod
+Valor_desconto_item
+Valor_outras_item
+Valor_do_frete_item
+Valor_do_seguro_item
+BC_ICMS_prod
+Valor_ICMS_prod
+Aliq_ICMS_prod
+BC_ICMS_ST_prod
+Valor_ICMS_ST_prod
+Aliq_ICMS_ST_prod
+Valor_IPI_prod
+Aliq_IPI_prod
+Valor_PMC_prod
+Cod_EAN
+Info_Adicional_Item
+Tipo_Operacao_Veic_Novo
+Tipo_Pintura_Veic_Novo
+CNPJ_Concessionaria_entrega
+UF_entrega
+Chassi_do_Veiculo
+Informacoes_adicionais_do_FISCO
+Informacoes_complementares
+CódigoprodutoANP
+Perc.GLPderivadodopetróleo
+Perc.GásNaturalNacional
+Perc.GásNaturalImportado
+Valordepartida
+CODIF
+Quant.combustíveltemp.ambiente
+UFdeconsumo
+Valordoserviçoretido(vServ)
+BCRetençãoTransporte(vBCRet)
+AlíquotadaRetençãoTransporte(pICMSRet)
+ValorICMSRetidoTransporte(vICMSRet)
+InformaçõesdoCT-evinculado
+InformaçõesdoMDF-evinculado
+Informaçõesdopagamento
+Valordopagamento
+CódigoReceitaPagamento
+BCICMSCT-e
+AlíquotaCT-e
+ValorICMSCT-e
+ValordoServiçodoCT-e(vTPrest)
+QtdeVolumes
+pesolíq.
+pesobruto
+natOp
+email destinatário
+alíq. crédito SN
+valor crédito SN
+data e hora de saída
+placa MDF-e
+CNAE transporta PB
+IndPres
+CRT
+CSTIPI
+Evento da NFe
