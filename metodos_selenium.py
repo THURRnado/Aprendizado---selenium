@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 
 def write(xpath:str, text:str, driver):
     campo = WebDriverWait(driver, 10).until(
@@ -31,3 +32,26 @@ def iframe_end(driver):
      driver.switch_to.default_content()
 
      return
+
+def get_text(xpath: str, driver) -> str:
+    element = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.XPATH, xpath))
+    )
+
+    return element.text
+
+def scroll_to_element(xpath: str, driver):
+    element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, xpath))
+    )
+
+    driver.execute_script("arguments[0].scrollIntoView(true);", element)
+
+def select_option(xpath:str, option:int, driver):
+    select_element = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.XPATH, xpath))
+    )
+
+    select = Select(select_element)
+
+    select.select_by_index(option)  

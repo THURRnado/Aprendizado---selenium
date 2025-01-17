@@ -9,8 +9,15 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from dotenv import load_dotenv
 
 def download_nota_fiscal():
+
+    # Carrega as variáveis do .env
+    load_dotenv()
+
+    user = os.getenv("SEFAZ_USER")
+    password = os.getenv("SEFAZ_PASSWORD")
     
     download_dir = os.path.join(os.getcwd(), "uploads", "pdf")
 
@@ -41,10 +48,10 @@ def download_nota_fiscal():
         iframe('//*[@id="atf-login"]/iframe', driver)
 
         #Preenchendo o campo de login
-        write('//*[@id="form-cblogin-username"]/div/input', 'hel00012', driver)
+        write('//*[@id="form-cblogin-username"]/div/input', user, driver)
 
         #Preenchendo o campo de senha
-        write('//*[@id="form-cblogin-password"]/div[1]/input', 'Asdf3340', driver)
+        write('//*[@id="form-cblogin-password"]/div[1]/input', password, driver)
 
         click('//*[@id="form-cblogin-password"]/div[2]/input[2]', driver)
 
@@ -58,7 +65,8 @@ def download_nota_fiscal():
 
         write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[2]', '30/11/2024', driver)
 
-        iframe('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[7]/td/table/tbody/tr[2]/td/iframe', driver)
+        # MUDAR O IFRAME PARA DESTINATARIO
+        iframe('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[10]/td/table/tbody/tr[2]/td/iframe', driver)
 
         write('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[2]/input', '161476090', driver)
 
@@ -82,7 +90,7 @@ def download_nota_fiscal():
 
         driver.get('https://www.sefaz.pb.gov.br/servirtual/caixa-de-mensagens')
 
-        time.sleep(30)
+        time.sleep(2)
 
     finally:
 
