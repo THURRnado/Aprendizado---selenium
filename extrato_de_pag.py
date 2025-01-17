@@ -1,9 +1,6 @@
 '''sefaz pb
 sefaz virrtal
 
-usuario: hel00012
-senha: Asdf3340
-
 01/22/2024 - 30/11/2024
 
 16.147.609-0
