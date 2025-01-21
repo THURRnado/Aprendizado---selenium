@@ -14,15 +14,15 @@ from dotenv import load_dotenv
 
 def process(driver, option:int, dt_start:str, dt_end:str, ie:str):
 
-    driver.get('https://www.sefaz.pb.gov.br/servirtual/documentos-fiscais/nf-e/consulta-emitentes-destinatarios')
+    driver.get('https://www.sefaz.pb.gov.br/servirtual/documentos-fiscais/ct-e/consulta-remetente-destinatario-tomador-prestador')
 
-    driver.get('https://www4.sefaz.pb.gov.br/atf/fis/FISf_ConsultarNFeXml2.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
+    driver.get('https://www4.sefaz.pb.gov.br/atf/fis/FISf_ConsultarCTeGenerica.do?idSERVirtual=S&amp;h=https://www.sefaz.pb.gov.br/ser/servirtual/credenciamento/info')
 
     write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[1]', dt_start, driver)
 
     write('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/input[2]', dt_end, driver)
 
-    iframe('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[7]/td/table/tbody/tr[2]/td/iframe', driver)
+    iframe('/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[16]/td/table/tbody/tr[2]/td/iframe', driver)
 
     if option == 1:
         write('//*[@id="Layer1"]/table/tbody/tr/td/form/table/tbody/tr[1]/td[2]/input', ie, driver)
@@ -36,7 +36,7 @@ def process(driver, option:int, dt_start:str, dt_end:str, ie:str):
     iframe_end(driver)
 
     select_element = WebDriverWait(driver, 10).until(
-        EC.presence_of_element_located((By.XPATH, '/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[12]/td/select'))
+        EC.presence_of_element_located((By.XPATH, '/html/body/table/tbody/tr[2]/td/form/table/tbody/tr[31]/td[2]/select'))
     )
 
     select = Select(select_element)
