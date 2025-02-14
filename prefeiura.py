@@ -16,8 +16,8 @@ def download_nota_fiscal():
     # Carrega as variáveis do .env
     load_dotenv()
 
-    user = os.getenv("SEFAZ_USER")
-    password = os.getenv("SEFAZ_PASSWORD")
+    user = os.getenv("ACESSO_PREFEITURA")
+    password = os.getenv("PASSWORD_PREFEITURA")
     
     download_dir = os.path.join(os.getcwd(), "uploads", "pdf")
 
